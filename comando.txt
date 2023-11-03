@@ -1,0 +1,5 @@
+Para inciar el servidor JSON se deben tener abierto el node de ejecución de la siguiente línea:
+           --> npx json-server --watch db.json --port 5000
+
+y abrir una nueva terminal para ejecutar la línea:
+           --> npm start
