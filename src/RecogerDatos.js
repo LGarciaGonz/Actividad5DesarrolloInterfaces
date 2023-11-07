@@ -1,38 +1,32 @@
 import { useState, useEffect } from 'react';
 
-const DEFAULT_URL = "http://localhost:5000/users";
-
 async function fetchPosts() {
   const response = await fetch('http://localhost:5000/users');
   const blogPosts = await response.json();
   return blogPosts;
 }
 
-
-async function fetchPosts2() {
-  const response2 = await fetch(DEFAULT_URL);
-  const blogPosts2 = await response2.json();
-  return blogPosts2;
-}
-
 function FetchUseEffect() {
   const [loadedPosts, setLoadedPosts] = useState([]);
   const [useeffectvar, setUseEffectVar] = useState();
-//   function fetchPostsHandler() {
-//     fetchPosts().then((fetchedPosts) => setLoadedPosts(fetchedPosts));
-//   }
+  const [dataUser, setDataUser] = useState(); 
+  
+
+  async function fetchPosts2() {
+    const response2 = await fetch('http://localhost:5000/users/' + useeffectvar);
+    const blogPosts2 = await response2.json();
+    return blogPosts2;
+  }
 
   useEffect(function () {
     fetchPosts().then((fetchedPosts) => setLoadedPosts(fetchedPosts));
   }, []);
 
-  // useEffect(
-  //   ()=> {console.log("He llamado a esta función desde useEffect" + useeffectvar)}
-  //   , [useeffectvar]);
-
   useEffect(
     function () {
-      fetchPosts2().then((fetchedPosts2) => setLoadedPosts(fetchedPosts2));
+      fetchPosts2().then((fetchedPosts2) => {
+        setDataUser(fetchedPosts2)});
+
     }, [useeffectvar]);
 
     return (
@@ -40,10 +34,16 @@ function FetchUseEffect() {
           <ul>
           {loadedPosts.map((post) => (
             <li key={post.id}>
-              {post.name} 
+              {post.name} <span>  </span>
               <button onClick={()=>{setUseEffectVar(post.id)}}>
-                Texto
-              </button>
+                Mostrar datos</button>    
+              {dataUser && dataUser.id === post.id &&(
+                  <ul>
+                    <li>{dataUser.name}</li>
+                    <li>{dataUser.email}</li>
+                    <li>{dataUser.phone}</li>
+                  </ul>
+                )}
             </li>
           ))}
         </ul>
